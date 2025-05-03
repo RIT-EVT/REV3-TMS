@@ -61,7 +61,11 @@ add_library(${PROJECT_NAME} STATIC)
 
 # Add sources
 target_sources(${PROJECT_NAME} PRIVATE
+        src/dev/TMP117I2CDevice.cpp
         src/TMS.cpp
+        src/dev/Pump.cpp
+        src/dev/TMP117.cpp
+        src/dev/TCA9545A.cpp
         )
 
 ###############################################################################
