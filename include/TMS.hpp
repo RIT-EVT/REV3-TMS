@@ -1,16 +1,17 @@
 #ifndef TMS_HPP
 #define TMS_HPP
 
+#include <co_core.h>
 #include <core/dev/Thermistor.hpp>
 #include <core/io/CANDevice.hpp>
 #include <core/io/CANOpenMacros.hpp>
 #include <core/io/GPIO.hpp>
+#include <core/io/pin.hpp>
 #include <core/utils/log.hpp>
-#include <co_core.h>
 #include <dev/Pump.hpp>
 #include <dev/TCA9545A.hpp>
 
-#define NUM_TEMP_SENSORS 4
+#define NUM_TEMP_SENSORS 5
 
 namespace dev = core::dev;
 namespace log = core::log;
@@ -20,6 +21,19 @@ namespace TMS {
 
 class TMS : public CANDevice {
 public:
+
+    static constexpr io::Pin TEMP_SCL = io::Pin::PB_8;
+    static constexpr io::Pin TEMP_SDA = io::Pin::PB_9;
+
+    static constexpr io::Pin CAN_RX = io::Pin::PA_11;
+    static constexpr io::Pin CAN_TX = io::Pin::PA_12;
+
+    static constexpr io::Pin PUMP1_PWM = io::Pin::PA_6;
+    static constexpr io::Pin PUMP2_PWM = io::Pin::PA_7;
+
+   static constexpr io::Pin FLOW1_PWM = io::Pin::PB_15;
+   static constexpr io::Pin FLOW2_PWM = io::Pin::PB_14;
+
     /**
      * Construct a TMS instance
      *
@@ -54,7 +68,7 @@ public:
 
 private:
     /** The node ID used to identify the device on the CAN network */
-    static constexpr uint8_t NODE_ID = 0x08;
+    static constexpr uint8_t NODE_ID = 0x02;
     /** Current NMT Mode */
     CO_MODE mode = CO_PREOP;
 

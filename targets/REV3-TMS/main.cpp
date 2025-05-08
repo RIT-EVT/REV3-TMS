@@ -39,7 +39,6 @@ void canInterrupt(io::CANMessage& message, void* priv) {
     }
 }
 
-// TODO: Eliminate this global variable
 TMS::TMS* tmsPtr = nullptr;
 // Keep the TMS instance up-to-date with the NMT mode
 extern "C" void CONmtModeChange(CO_NMT* nmt, CO_MODE mode) {
@@ -56,44 +55,51 @@ int main() {
     log::LOGGER.setLogLevel(log::Logger::LogLevel::DEBUG);
     log::LOGGER.log(log::Logger::LogLevel::DEBUG, "Logger initialized.");
 
-    io::I2C& i2c = io::getI2C<io::Pin::PB_8, io::Pin::PB_9>();
+    io::I2C& i2c = io::getI2C<TMS::TMS::TEMP_SCL, TMS::TMS::TEMP_SDA>();
 
     //array storing I2CDevices
-    TMS::TMP117I2CDevice devices[3];
+    TMS::TMP117I2CDevice devices[5];
 
     //BUS POINTERS
-    //array of buses
-    TMS::TMP117I2CDevice** buses[4];
-    //buses
-    TMS::TMP117I2CDevice* bus0[0];
-    TMS::TMP117I2CDevice* bus1[3];
-    TMS::TMP117I2CDevice* bus2[1];
-    TMS::TMP117I2CDevice* bus3[0];
 
-    //set each index in buses array to be a bus
-    buses[0] = bus0;
-    buses[1] = bus1;
-    buses[2] = bus2;
-    buses[3] = bus3;
+    //buses, Specify the number of devices on each bus here
+    TMS::TMP117I2CDevice* bus0[2];
+    TMS::TMP117I2CDevice* bus1[2];
+    TMS::TMP117I2CDevice* bus2[1];
+    TMS::TMP117I2CDevice* bus3[1];
+
+    //array of buses
+    TMS::TMP117I2CDevice** buses[4] = {bus0, bus1, bus2, bus3};
 
     // TODO: figure out why stuff is "implicitly deleted"
     // Set up TMS and necessary device drivers
-    TMS::TMP117 tmpDevices[4];
+    TMS::TMP117 tmpDevices[5];
 
+    // Bus 0 devices
     tmpDevices[0] = TMS::TMP117(&i2c, 0x48);
     devices[0] = TMS::TMP117I2CDevice(&tmpDevices[0], &TMS::TMS::sensorTemps[0]);
-    bus2[0] = &devices[0];
+    bus0[0] = &devices[0];
 
-    tmpDevices[1] = TMS::TMP117(&i2c, 0x48);
-    devices[1] = TMS::TMP117I2CDevice(&tmpDevices[1], &TMS::TMS::sensorTemps[2]);
-    bus1[0] = &devices[1];
+    tmpDevices[1] = TMS::TMP117(&i2c, 0x4A);
+    devices[1] = TMS::TMP117I2CDevice(&tmpDevices[1], &TMS::TMS::sensorTemps[1]);
+    bus0[1] = &devices[1];
 
-    tmpDevices[2] = TMS::TMP117(&i2c, 0x49);
-    devices[2] = TMS::TMP117I2CDevice(&tmpDevices[2], &TMS::TMS::sensorTemps[3]);
-    bus1[1] = &devices[2];
+    // Bus 1 devices
+    tmpDevices[2] = TMS::TMP117(&i2c, 0x48);
+    devices[2] = TMS::TMP117I2CDevice(&tmpDevices[2], &TMS::TMS::sensorTemps[2]);
+    bus1[0] = &devices[2];
 
-    uint8_t numDevices[4] = {0, 2, 1, 0};
+    tmpDevices[3] = TMS::TMP117(&i2c, 0x4A);
+    devices[3] = TMS::TMP117I2CDevice(&tmpDevices[3], &TMS::TMS::sensorTemps[3]);
+    bus1[1] = &devices[3];
 
+    // Bus 2 devices
+    tmpDevices[4] = TMS::TMP117(&i2c, 0x48);
+    devices[4] = TMS::TMP117I2CDevice(&tmpDevices[4], &TMS::TMS::sensorTemps[4]);
+    bus2[0] = &devices[4];
+
+
+    uint8_t numDevices[4] = {2, 2, 1, 0}; // Repeat Device counts on each buss
     TMS::TCA9545A tca(i2c, 0x70, reinterpret_cast<TMS::I2CDevice***>(buses), numDevices);
 
     TMS::Pump pump(io::getPWM<io::Pin::PA_6>());
@@ -156,6 +162,6 @@ int main() {
     while (1) {
         tms.process();
         io::processCANopenNode(&canNode);
-        time::wait(250);
+        time::wait(100);
     }
 }
