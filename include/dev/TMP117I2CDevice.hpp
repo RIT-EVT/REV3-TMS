@@ -24,7 +24,7 @@ public:
      * @param[in] tmp117 Pointer to tmp object
      * @param[in] tempValue Where the temp value should be stored
      */
-    TMP117I2CDevice(TMP117* tmp117, uint16_t* tempValue);
+    TMP117I2CDevice(TMP117* tmp117, int16_t* tempValue);
 
     /**
      * Reads the sensor value and stores it in tempValue
@@ -42,7 +42,7 @@ private:
     /**
      * Address to write temperature values to
      */
-    uint16_t* tempValue;
+    int16_t* tempValue;
 };
 
 }// namespace TMS

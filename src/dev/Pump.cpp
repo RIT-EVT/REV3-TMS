@@ -9,7 +9,7 @@ Pump::Pump(io::PWM& pwm) : pwm(pwm) {
     stop();
 }
 
-void Pump::setSpeed(uint16_t speed) {
+void Pump::setSpeed(uint8_t speed) {
     if (speed > MAX_SPEED) {
         speed = MAX_SPEED;
     } else if (speed == 0) {
@@ -17,7 +17,7 @@ void Pump::setSpeed(uint16_t speed) {
         return;
     }
 
-    pwm.setDutyCycle(SPEED_TO_DUTY_CYCLE(speed));
+    pwm.setDutyCycle(SPEED_TO_DUTY_CYCLE((uint16_t) speed));
 }
 
 void Pump::stop() {

@@ -3,8 +3,6 @@
 
 #include <core/io/I2C.hpp>
 
-#define TEMP_REG 0x00
-
 namespace io = core::io;
 
 namespace TMS {
@@ -33,19 +31,18 @@ public:
      *
      * @return temperature reading in degrees centi celsius
      */
-    uint16_t readTemp();
+    int16_t readTemp();
 
 private:
     /**
      * Register for temperature values
-     * TODO: Make the register input for I2C.readReg() a const pointer, so this can be const
      */
-    uint8_t tempReg;
+    static constexpr uint8_t TEMP_REG = 0x00;
 
     /**
      * Device ID
      */
-    uint8_t i2cSlaveAddress;
+    uint8_t i2cSlaveAddress = 0x48;
 
     /**
      * I2C instance

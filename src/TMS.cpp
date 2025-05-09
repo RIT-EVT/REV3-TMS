@@ -2,9 +2,9 @@
 
 namespace TMS {
 
-uint16_t TMS::sensorTemps[NUM_TEMP_SENSORS] = {};
+int16_t TMS::sensorTemps[NUM_TEMP_SENSORS] = {};
 
-TMS::TMS(TCA9545A& tca9545A, Pump pump) : tca9545A(tca9545A), pump(pump) {}
+TMS::TMS(TCA9545A& tca9545A, Pump pumps[2]) : tca9545A(tca9545A), pumps{pumps[0], pumps[1]} {}
 
 CO_OBJ_T* TMS::getObjectDictionary() {
     return &objectDictionary[0];
@@ -17,24 +17,41 @@ uint8_t TMS::getNodeID() {
 }
 
 void TMS::process() {
-    log::LOGGER.log(log::Logger::LogLevel::DEBUG, "Updating Temps");
-    tca9545A.pollDevices();
+    static uint32_t lastUpdate = 0;
 
-    for(int i = 0; i < NUM_TEMP_SENSORS; i++) {
-        log::LOGGER.log(log::Logger::LogLevel::DEBUG, "Temp #%d: %d", i, sensorTemps[i]);
+    tca9545A.pollDevices();
+#ifdef EVT_CORE_LOG_ENABLE
+    if (time::millis() - lastUpdate > 100) {
+        lastUpdate = time::millis();
+        log::LOGGER.log(log::Logger::LogLevel::DEBUG, "[%d] Updating!", lastUpdate);
+        for (int i = 0; i < NUM_TEMP_SENSORS; i++) {
+            log::LOGGER.log(log::Logger::LogLevel::DEBUG, "Temp #%d: %d", i, sensorTemps[i]);
+        }
+        for (int i = 0; i < 2; i++) {
+            log::LOGGER.log(log::Logger::LogLevel::DEBUG, "Pump #%d: %d", i, pumpSpeed[i]);
+        }
+        for (int i = 0; i < 2; i++) {
+            log::LOGGER.log(log::Logger::LogLevel::DEBUG, "Flow #%d: %d", i, flowRate[i]);
+        }
     }
+#endif
 
     switch (mode) {
     // Auxiliary Mode
     case CO_PREOP:
         // Turn the pump and fans off
-        pump.stop();
+        pumps[0].stop();
+        pumps[1].stop();
 
         break;
     // Operational Mode
     case CO_OPERATIONAL:
         // Set the cooling controls
-        applyThermalModel();
+        pumps[0].setSpeed(pumpSpeed[0]);
+        pumps[1].setSpeed(pumpSpeed[1]);
+
+        flowRate[0] = pumpSpeed[0];
+        flowRate[1] = pumpSpeed[1];
 
         break;
     default:
@@ -44,11 +61,6 @@ void TMS::process() {
 
 void TMS::setMode(CO_MODE newMode) {
     mode = newMode;
-}
-
-void TMS::applyThermalModel() {
-    // Command devices to execute the control policy
-    pump.setSpeed(pumpSpeed);
 }
 
 }// namespace TMS

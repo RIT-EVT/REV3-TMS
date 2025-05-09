@@ -4,8 +4,8 @@ namespace TMS {
 
 TMP117I2CDevice::TMP117I2CDevice() {}
 
-TMP117I2CDevice::TMP117I2CDevice(TMS::TMP117* tmp117, uint16_t* tempValue) : tmp117(tmp117),
-                                                                             tempValue(tempValue) {}
+TMP117I2CDevice::TMP117I2CDevice(TMS::TMP117* tmp117, int16_t* tempValue) : tmp117(tmp117),
+                                                                            tempValue(tempValue) {}
 
 io::I2C::I2CStatus TMP117I2CDevice::action() {
     *tempValue = tmp117->readTemp();

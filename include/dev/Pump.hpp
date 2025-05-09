@@ -10,7 +10,7 @@
 #define PERIOD 1053
 #define MAX_SPEED 100
 #define STOP_DUTY_CYCLE 10
-#define SPEED_TO_DUTY_CYCLE(speed) ((speed * 72 / 100) + 13)//d = (85 - 13)(s / 100) + 13
+#define SPEED_TO_DUTY_CYCLE(speed) (((speed) * 72 / 100) + 13)//d = (85 - 13)(s / 100) + 13
 
 namespace io = core::io;
 namespace time = core::time;
@@ -35,7 +35,7 @@ public:
      *
      * @param speed Speed (0-100) to set the pump to
      */
-    void setSpeed(uint16_t speed);
+    void setSpeed(uint8_t speed);
 
     /**
      * Stop the pump
