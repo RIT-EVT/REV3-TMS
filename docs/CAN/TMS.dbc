@@ -1,0 +1,80 @@
+VERSION ""
+
+
+NS_ :
+    NS_DESC_
+    CM_
+    BA_DEF_
+    BA_
+    VAL_
+    CAT_DEF_
+    CAT_
+    FILTER
+    BA_DEF_DEF_
+    EV_DATA_
+    ENVVAR_DATA_
+    SGTYPE_
+    SGTYPE_VAL_
+    BA_DEF_SGTYPE_
+    BA_SGTYPE_
+    SIG_TYPE_REF_
+    VAL_TABLE_
+    SIG_GROUP_
+    SIG_VALTYPE_
+    SIGTYPE_VALTYPE_
+    BO_TX_BU_
+    BA_DEF_REL_
+    BA_REL_
+    BA_DEF_DEF_REL_
+    BU_SG_REL_
+    BU_EV_REL_
+    BU_BO_REL_
+    SG_MUL_VAL_
+
+BS_: 
+BU_: TMS 
+BO_ 386 TEMP1_TPDO: 8 TMS
+   SG_ TEMP1_TPDOBoard : 0|16@1- (1,0) [-25600|25599] "centiCelcius" TMS
+   SG_ TEMP1_TPDOT0 : 16|16@1- (1,0) [-25600|25599] "centiCelcius" TMS
+   SG_ TEMP1_TPDOT1 : 32|16@1- (1,0) [-25600|25599] "centiCelcius" TMS
+   SG_ TEMP1_TPDOT2 : 48|16@1- (1,0) [-25600|25599] "centiCelcius" TMS
+
+BO_ 642 TEMP2_TPDO: 8 TMS
+   SG_ TEMP2_TPDOT3 : 0|16@1- (1,0) [-25600|25599] "centiCelcius" TMS
+   SG_ TEMP2_TPDOT4 : 16|16@1- (1,0) [-25600|25599] "centiCelcius" TMS
+   SG_ TEMP2_TPDOT5 : 32|16@1- (1,0) [-25600|25599] "centiCelcius" TMS
+   SG_ TEMP2_TPDOT6 : 48|16@1- (1,0) [-25600|25599] "centiCelcius" TMS
+
+BO_ 898 FLOW_TPDO: 4 TMS
+   SG_ TPDO2Flow1 : 0|16@1- (1,0) [0|255] "duty_cycle" TMS
+   SG_ TPDO2Flow2 : 16|16@1- (1,0) [0|255] "duty_cycle" TMS
+
+BO_ 1794 Heartbeat: 1 TMS
+   SG_ HeartbeatSig : 7|8@0+ (1,0) [0|127] "" TMS
+
+BO_ 2147485186 SDO_Receive: 8 TMS
+
+BO_ 2147485058 SDO_TRANSMIT: 8 TMS
+
+BO_ 2147484288 RPDO0_VCU_TPDO1: 2 TMS
+   SG_ RPDO0_VCU_TPDO1Pump1 : 0|8@1+ (1,0) [0|100] "" Vector__XXX
+   SG_ RPDO0_VCU_TPDO1Pump2 : 8|8@1+ (1,0) [0|100] "" Vector__XXX
+
+CM_ BO_ 2147484288 "TEMPORARY PUMP CONTROL! Use SDO instead.";
+BA_DEF_ BO_ "GenMsgBackgroundColor" STRING ;
+BA_DEF_ BO_ "GenMsgForegroundColor" STRING ;
+BA_DEF_ BO_ "matchingcriteria" INT 0 0;
+BA_DEF_ BO_ "filterlabeling" INT 0 0;
+BA_DEF_ BO_ "matchingcriteria" INT 0 0;
+BA_DEF_ BO_ "filterlabeling" INT 0 0;
+BA_DEF_ BO_ "matchingcriteria" INT 0 0;
+BA_DEF_ BO_ "filterlabeling" INT 0 0;
+BA_DEF_DEF_ "GenMsgBackgroundColor" "#ffffff";
+BA_DEF_DEF_ "GenMsgForegroundColor" "#000000";
+BA_DEF_DEF_ "matchingcriteria" 0;
+BA_DEF_DEF_ "filterlabeling" 1;
+BA_ "GenMsgForegroundColor" BO_ 386 "#000000";
+BA_ "GenMsgForegroundColor" BO_ 1794 "#aa00ff";
+BA_ "GenMsgForegroundColor" BO_ 2147485186 "#0000ff";
+BA_ "GenMsgForegroundColor" BO_ 2147484288 "#ff0000";
+VAL_ 1794 HeartbeatSig 0 "Bootup" 4 "Stopped" 5 "Operational" 127 "Pre-Operationa";
