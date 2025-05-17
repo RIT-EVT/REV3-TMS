@@ -18,6 +18,13 @@ public:
      * @return Status of I2C call made
      */
     virtual io::I2C::I2CStatus action() = 0;
+
+    /**
+     * Gets a previously retrieved value
+     *
+     * @return The last value
+     */
+    virtual uint32_t value() = 0;
 };
 
 }// namespace TMS

@@ -14,12 +14,13 @@
 #include <dev/I2CDevice.hpp>
 #include <dev/Pump.hpp>
 #include <dev/TMP117.hpp>
-#include <dev/TMP117I2CDevice.hpp>
 
 namespace io = core::io;
 namespace dev = core::dev;
 namespace time = core::time;
 namespace log = core::log;
+
+#define NUM_TEMP_SENSORS 5
 
 ///////////////////////////////////////////////////////////////////////////////
 // EVT-core CAN callback and CAN setup. This will include logic to set
@@ -60,51 +61,48 @@ int main() {
     io::I2C& i2c = io::getI2C<TMS::TMS::TEMP_SCL, TMS::TMS::TEMP_SDA>();
 
     //array storing I2CDevices
-    TMS::TMP117I2CDevice devices[5];
+    //    TMS::TMP117I2CDevice devices[5];
 
     //BUS POINTERS
     //buses, Specify the number of devices on each bus here
-    TMS::TMP117I2CDevice* bus0[2];
-    TMS::TMP117I2CDevice* bus1[2];
-    TMS::TMP117I2CDevice* bus2[1];
-    TMS::TMP117I2CDevice* bus3[1];
+    TMS::I2CDevice* bus0[2];
+    TMS::I2CDevice* bus1[2];
+    TMS::I2CDevice* bus2[1];
+    TMS::I2CDevice* bus3[1];
 
     //array of buses
-    TMS::TMP117I2CDevice** buses[4] = {bus0, bus1, bus2, bus3};
+    TMS::I2CDevice** buses[4] = {bus0, bus1, bus2, bus3};
 
-    // TODO: figure out why stuff is "implicitly deleted"
-    // Set up TMS and necessary device drivers
-    TMS::TMP117 tmpDevices[5];
+    // Setup TMS and necessary device drivers
+    TMS::TMP117 devices[NUM_TEMP_SENSORS];
 
     // Bus 2 on-board sensor
-    tmpDevices[0] = TMS::TMP117(&i2c, 0x48);
-    devices[0] = TMS::TMP117I2CDevice(&tmpDevices[0], &TMS::TMS::sensorTemps[0]);
+    devices[0] = TMS::TMP117(&i2c, 0x48, &TMS::TMS::sensorTemps[0]);
     bus2[0] = &devices[0];
 
     // Bus 0 devices
-    tmpDevices[1] = TMS::TMP117(&i2c, 0x48);
-    devices[1] = TMS::TMP117I2CDevice(&tmpDevices[1], &TMS::TMS::sensorTemps[1]);
+    devices[1] = TMS::TMP117(&i2c, 0x48, &TMS::TMS::sensorTemps[1]);
     bus0[0] = &devices[1];
 
-    tmpDevices[2] = TMS::TMP117(&i2c, 0x4A);
-    devices[2] = TMS::TMP117I2CDevice(&tmpDevices[2], &TMS::TMS::sensorTemps[2]);
+    devices[2] = TMS::TMP117(&i2c, 0x4A, &TMS::TMS::sensorTemps[2]);
     bus0[1] = &devices[2];
 
     // Bus 1 devices
-    tmpDevices[3] = TMS::TMP117(&i2c, 0x48);
-    devices[3] = TMS::TMP117I2CDevice(&tmpDevices[3], &TMS::TMS::sensorTemps[3]);
+    devices[3] = TMS::TMP117(&i2c, 0x48, &TMS::TMS::sensorTemps[3]);
     bus1[0] = &devices[3];
 
-    tmpDevices[4] = TMS::TMP117(&i2c, 0x4A);
-    devices[4] = TMS::TMP117I2CDevice(&tmpDevices[4], &TMS::TMS::sensorTemps[4]);
+    devices[4] = TMS::TMP117(&i2c, 0x4A, &TMS::TMS::sensorTemps[4]);
     bus1[1] = &devices[4];
 
-    uint8_t numDevices[4] = {2, 2, 1, 0};// Repeat Device counts on each buss
-    TMS::TCA9545A tca(i2c, 0x70, reinterpret_cast<TMS::I2CDevice***>(buses), numDevices);
+    // Setup MUX with all the devices
+    uint8_t numDevices[4] = {2, 2, 1, 0};// Repeat Device counts on each bus
+    TMS::TCA9545A tca(i2c, 0x70, buses, numDevices);
 
+    // Setup all the pumps
     TMS::Pump pumps[2] = {TMS::Pump(io::getPWM<TMS::TMS::PUMP1_PWM>()),
                           TMS::Pump(io::getPWM<TMS::TMS::PUMP2_PWM>())};
 
+    // Setup main TMS instance with configured MUX and pumps
     TMS::TMS tms(tca, pumps);
     tmsPtr = &tms;
 

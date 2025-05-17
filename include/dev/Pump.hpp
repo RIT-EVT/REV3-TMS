@@ -1,5 +1,5 @@
-#ifndef TMS_INCLUDE_TMS_DEV_PUMP_HPP
-#define TMS_INCLUDE_TMS_DEV_PUMP_HPP
+#ifndef TMS_PUMP_HPP
+#define TMS_PUMP_HPP
 
 #include <core/io/PWM.hpp>
 #include <core/utils/time.hpp>
@@ -10,7 +10,7 @@
 #define PERIOD 1053
 #define MAX_SPEED 100
 #define STOP_DUTY_CYCLE 10
-#define SPEED_TO_DUTY_CYCLE(speed) (((speed) * 72 / 100) + 13)//d = (85 - 13)(s / 100) + 13
+#define SPEED_TO_DUTY_CYCLE(speed) (((speed) *72 / 100) + 13)//d = (85 - 13)(s / 100) + 13
 
 namespace io = core::io;
 namespace time = core::time;
@@ -18,7 +18,7 @@ namespace time = core::time;
 namespace TMS {
 
 /**
- * Represents the heat pump used for DEV1
+ * Represents the Pump used on the bikes.
  * Datasheet: https://www.tecomotive.com/en/products/CWA100-3.html
  */
 class Pump {
@@ -49,4 +49,4 @@ private:
 
 }// namespace TMS
 
-#endif//TMS_INCLUDE_TMS_DEV_PUMP_HPP
+#endif//TMS_PUMP_HPP
