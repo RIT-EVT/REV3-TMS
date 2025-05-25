@@ -34,12 +34,13 @@ io::I2C::I2CStatus TCA954MUX::readRegister(uint8_t reg, uint8_t* val) {
 
 void TCA954MUX::pollDevices() {
     for (int i = 0; i < I2C_MUX_BUS_SIZE; i++) {
+        bool skip = false;
         if (setBus(i, true) == io::I2C::I2CStatus::ERROR) {
-            continue;
+            skip = true;
         }
 
         for (int j = 0; j < numDevices[i]; j++) {
-            busDevices[i][j]->action();
+            busDevices[i][j]->action(skip);
         }
     }
 }

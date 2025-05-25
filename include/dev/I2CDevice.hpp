@@ -17,7 +17,7 @@ public:
      *
      * @return Status of I2C call made
      */
-    virtual io::I2C::I2CStatus action() = 0;
+    virtual io::I2C::I2CStatus action(bool skip) = 0;
 
     /**
      * Gets a previously retrieved value

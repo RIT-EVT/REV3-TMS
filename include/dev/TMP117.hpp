@@ -49,7 +49,7 @@ public:
      *
      * @return I2CStatus of the internal action
      */
-    io::I2C::I2CStatus action() override;
+    io::I2C::I2CStatus action(bool skip) override;
 
     /**
      * Gets the last read sensor value
