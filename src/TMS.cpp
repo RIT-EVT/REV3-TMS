@@ -50,6 +50,7 @@ void TMS::process() {
         pumps[0].setSpeed(pumpSpeed[0]);
         pumps[1].setSpeed(pumpSpeed[1]);
 
+        // TODO: Replace with actual flow speed once PWMInput is in EVT-core. TEMPORARY!!!!
         flowRate[0] = pumpSpeed[0];
         flowRate[1] = pumpSpeed[1];
 
