@@ -1,8 +1,9 @@
-#ifndef TMS_TCA9545A_HPP
-#define TMS_TCA9545A_HPP
+#ifndef TMS_TCA954MUX_HPP
+#define TMS_TCA954MUX_HPP
+
+#include <cstddef>
 
 #include <core/io/I2C.hpp>
-#include <cstddef>
 #include <dev/I2CDevice.hpp>
 
 #define I2C_MUX_BUS_SIZE 4
@@ -13,7 +14,7 @@ namespace TMS {
 /**
  * Represents the registers for setting the active bus on the TCA9545A
  */
-enum TCA9545A_BUS {
+enum TCA954_BUS {
     BUS_0 = 0x01,
     BUS_1 = 0x02,
     BUS_2 = 0x04,
@@ -21,10 +22,11 @@ enum TCA9545A_BUS {
 };
 
 /**
- * TCA9545A I2C Multiplexer Driver
+ * Device driver for TCA9545A I2C Multiplexer. This allows multiple devices with the same address to be connected to
+ * the same bus by switching between 4 sub-buses that can be connected to the microcontroller.
  * Datasheet: https://www.ti.com/lit/ds/symlink/tca9545a.pdf
  */
-class TCA9545A {
+class TCA954MUX {
 public:
     /**
      * Constructor for the TCA9545A driver
@@ -34,8 +36,8 @@ public:
      * @param[in] buses array of buses containing I2CDevices
      * @param[in] numDevices Array with the number of devices on each bus
      */
-    TCA9545A(io::I2C& i2c, uint8_t addr, I2CDevice** buses[I2C_MUX_BUS_SIZE],
-             uint8_t numDevices[I2C_MUX_BUS_SIZE]);
+    TCA954MUX(io::I2C& i2c, uint8_t addr, I2CDevice** buses[I2C_MUX_BUS_SIZE],
+              uint8_t numDevices[I2C_MUX_BUS_SIZE]);
 
     /**
      * Sets the active bus on the TCA9545A
@@ -93,4 +95,4 @@ private:
 
 }// namespace TMS
 
-#endif//TMS_TCA9545A_HPP
+#endif// TMS_TCA954MUX_HPP

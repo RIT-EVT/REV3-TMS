@@ -9,7 +9,7 @@
 #include <core/io/pin.hpp>
 #include <core/utils/log.hpp>
 #include <dev/Pump.hpp>
-#include <dev/TCA9545A.hpp>
+#include <dev/TCA954MUX.hpp>
 
 #ifndef NUM_TEMP_SENSORS
     #define NUM_TEMP_SENSORS 5
@@ -53,6 +53,10 @@ namespace io = core::io;
 
 namespace TMS {
 
+/**
+ * Main board class for the Temperature Management System (TMS). Holds the object dictionary, handles updating the
+ * temperature sensor values, and controlling the pumps.
+ */
 class TMS : public CANDevice {
 public:
     static constexpr io::Pin TEMP_SCL = io::Pin::PB_8;
@@ -70,9 +74,9 @@ public:
     /**
      * Construct a TMS instance
      *
-     * @param tca9545A I2C MUX instance to use for getting temp sensor data
+     * @param tca954mux I2C MUX instance to use for getting temp sensor data
      */
-    TMS(TCA9545A& tca9545A, Pump pumps[2]);
+    TMS(TCA954MUX& tca954mux, Pump pumps[2]);
 
     /**
      * Array to store the thermistor values
@@ -109,7 +113,7 @@ private:
     CO_MODE mode = CO_PREOP;
 
     /** TCA9545A instance */
-    TCA9545A& tca9545A;
+    TCA954MUX& tca954mux;
     /** Heat pump instance */
     Pump pumps[2];
 

@@ -64,7 +64,7 @@ target_sources(${PROJECT_NAME} PRIVATE
         src/TMS.cpp
         src/dev/Pump.cpp
         src/dev/TMP117.cpp
-        src/dev/TCA9545A.cpp
+        src/dev/TCA954MUX.cpp
         )
 
 ###############################################################################

@@ -13,6 +13,7 @@
 #include <TMS.hpp>
 #include <dev/I2CDevice.hpp>
 #include <dev/Pump.hpp>
+#include <dev/TCA954MUX.hpp>
 #include <dev/TMP117.hpp>
 
 namespace io = core::io;
@@ -96,7 +97,7 @@ int main() {
 
     // Setup MUX with all the devices
     uint8_t numDevices[4] = {2, 2, 1, 0};// Repeat Device counts on each bus
-    TMS::TCA9545A tca(i2c, 0x70, buses, numDevices);
+    TMS::TCA954MUX tca(i2c, 0x70, buses, numDevices);
 
     // Setup all the pumps
     TMS::Pump pumps[2] = {TMS::Pump(io::getPWM<TMS::TMS::PUMP1_PWM>()),

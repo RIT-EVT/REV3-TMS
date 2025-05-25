@@ -4,7 +4,7 @@ namespace TMS {
 
 int16_t TMS::sensorTemps[NUM_TEMP_SENSORS] = {};
 
-TMS::TMS(TCA9545A& tca9545A, Pump pumps[2]) : tca9545A(tca9545A), pumps{pumps[0], pumps[1]} {}
+TMS::TMS(TCA954MUX& tca954mux, Pump pumps[2]) : tca954mux(tca954mux), pumps{pumps[0], pumps[1]} {}
 
 CO_OBJ_T* TMS::getObjectDictionary() {
     return &objectDictionary[0];
@@ -19,7 +19,7 @@ uint8_t TMS::getNodeID() {
 void TMS::process() {
     static uint32_t lastUpdate = 0;
 
-    tca9545A.pollDevices();
+    tca954mux.pollDevices();
 #ifdef EVT_CORE_LOG_ENABLE
     if (time::millis() - lastUpdate > 100) {
         lastUpdate = time::millis();
