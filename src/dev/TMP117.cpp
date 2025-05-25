@@ -34,11 +34,11 @@ io::I2C::I2CStatus TMP117::readTemp(int16_t& temp) {
 
 io::I2C::I2CStatus TMP117::action(bool skip = false) {
     io::I2C::I2CStatus status = io::I2C::I2CStatus::ERROR;
-    if(skip){
+    if (skip) {
         lastTempValue = ERROR_TEMP;
     } else {
         status = readTemp(lastTempValue);
-    } 
+    }
 
     if (tempPtr) {
         *tempPtr = lastTempValue;
