@@ -64,4 +64,4 @@ void TMS::setMode(CO_MODE newMode) {
     mode = newMode;
 }
 
-}// namespace TMS
+} // namespace TMS

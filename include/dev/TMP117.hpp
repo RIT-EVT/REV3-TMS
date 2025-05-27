@@ -27,7 +27,7 @@ public:
      *
      * @param[in] i2c used to read temperature
      * @param[in] i2cSlaveAddress address to ID the sensor on the I2C bus
-     * @param[in] tempValue pointer to store the temp value in on action 
+     * @param[in] tempValue pointer to store the temp value in on action
      * */
     TMP117(io::I2C* i2c, uint8_t i2cSlaveAddress, int16_t* tempPtr);
 
@@ -38,7 +38,7 @@ public:
 
     /**
      * Reads the temperature
-     *  
+     *
      * @param[out] temp the temperature reading in degrees centi-celsius
      * @return I2CStatus of the reading
      */
@@ -87,6 +87,6 @@ private:
     int16_t lastTempValue;
 };
 
-}// namespace TMS
+} // namespace TMS
 
-#endif//TMS_TMP117_HPP
+#endif // TMS_TMP117_HPP

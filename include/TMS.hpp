@@ -49,7 +49,7 @@
 
 namespace dev = core::dev;
 namespace log = core::log;
-namespace io = core::io;
+namespace io  = core::io;
 
 namespace TMS {
 
@@ -132,7 +132,7 @@ private:
         MANDATORY_IDENTIFICATION_ENTRIES_1000_1014,
         HEARTBEAT_PRODUCER_1017(2000),
         IDENTITY_OBJECT_1018,
-        SDO_CONFIGURATION_1200,// Mandatory Keys
+        SDO_CONFIGURATION_1200, // Mandatory Keys
 
         // Temporary RPDO for VCU to control pump speed, Remove once VCU has SDO (TMS SDO is done)
         RECEIVE_PDO_SETTINGS_OBJECT_140X(0x00, 0x01, VCU_NODE_ID, RECEIVE_PDO_TRIGGER_ASYNC),
@@ -174,7 +174,7 @@ private:
 
         // Data link 1 for temps
         DATA_LINK_START_KEY_21XX(1, 4),
-        DATA_LINK_21XX(1, 1, CO_TSIGNED16, &sensorTemps[0]),// On-board sensor
+        DATA_LINK_21XX(1, 1, CO_TSIGNED16, &sensorTemps[0]), // On-board sensor
         DATA_LINK_21XX(1, 2, CO_TSIGNED16, &sensorTemps[1]),
         DATA_LINK_21XX(1, 3, CO_TSIGNED16, &sensorTemps[2]),
         DATA_LINK_21XX(1, 4, CO_TSIGNED16, &sensorTemps[3]),
@@ -182,9 +182,9 @@ private:
         // Data link 2 for temps
         DATA_LINK_START_KEY_21XX(2, 4),
         DATA_LINK_21XX(2, 1, CO_TSIGNED16, &sensorTemps[4]),
-        DATA_LINK_21XX(2, 2, CO_TSIGNED16, &sensorTemps[0]),//UNUSED
-        DATA_LINK_21XX(2, 3, CO_TSIGNED16, &sensorTemps[0]),//UNUSED
-        DATA_LINK_21XX(2, 4, CO_TSIGNED16, &sensorTemps[0]),//UNUSED
+        DATA_LINK_21XX(2, 2, CO_TSIGNED16, &sensorTemps[0]), // UNUSED
+        DATA_LINK_21XX(2, 3, CO_TSIGNED16, &sensorTemps[0]), // UNUSED
+        DATA_LINK_21XX(2, 4, CO_TSIGNED16, &sensorTemps[0]), // UNUSED
 
         // Pump Command at 0x2200
         DATA_LINK_START_KEY_21XX(0x100, 2),
@@ -196,6 +196,6 @@ private:
     };
 };
 
-}// namespace TMS
+} // namespace TMS
 
-#endif//TMS_HPP
+#endif // TMS_HPP

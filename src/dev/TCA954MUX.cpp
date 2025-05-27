@@ -2,11 +2,11 @@
 
 namespace TMS {
 
-TCA954MUX::TCA954MUX(io::I2C& i2c, uint8_t addr, I2CDevice** buses[4],
-                     uint8_t numDevices[4]) : i2c(i2c),
-                                              i2cSlaveAddress(addr),
-                                              busDevices{buses[0], buses[1], buses[2], buses[3]},
-                                              numDevices{numDevices[0], numDevices[1], numDevices[2], numDevices[3]} {};
+TCA954MUX::TCA954MUX(io::I2C& i2c, uint8_t addr, I2CDevice** buses[4], uint8_t numDevices[4])
+    : i2c(i2c), i2cSlaveAddress(addr), busDevices{buses[0], buses[1], buses[2], buses[3]}, numDevices{numDevices[0],
+                                                                                                      numDevices[1],
+                                                                                                      numDevices[2],
+                                                                                                      numDevices[3]} {};
 
 io::I2C::I2CStatus TCA954MUX::setBus(uint8_t bus, bool toggled) {
     uint8_t val = static_cast<uint8_t>(toggled);
@@ -44,4 +44,4 @@ void TCA954MUX::pollDevices() {
         }
     }
 }
-}// namespace TMS
+} // namespace TMS

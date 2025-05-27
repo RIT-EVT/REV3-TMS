@@ -27,6 +27,6 @@ public:
     virtual uint32_t value() = 0;
 };
 
-}// namespace TMS
+} // namespace TMS
 
-#endif//TMS_I2CDEVICE_HPP
+#endif // TMS_I2CDEVICE_HPP

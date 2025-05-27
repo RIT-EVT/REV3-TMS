@@ -36,8 +36,7 @@ public:
      * @param[in] buses array of buses containing I2CDevices
      * @param[in] numDevices Array with the number of devices on each bus
      */
-    TCA954MUX(io::I2C& i2c, uint8_t addr, I2CDevice** buses[I2C_MUX_BUS_SIZE],
-              uint8_t numDevices[I2C_MUX_BUS_SIZE]);
+    TCA954MUX(io::I2C& i2c, uint8_t addr, I2CDevice** buses[I2C_MUX_BUS_SIZE], uint8_t numDevices[I2C_MUX_BUS_SIZE]);
 
     /**
      * Sets the active bus on the TCA9545A
@@ -93,6 +92,6 @@ private:
     io::I2C::I2CStatus readRegister(uint8_t reg, uint8_t* val);
 };
 
-}// namespace TMS
+} // namespace TMS
 
-#endif// TMS_TCA954MUX_HPP
+#endif // TMS_TCA954MUX_HPP

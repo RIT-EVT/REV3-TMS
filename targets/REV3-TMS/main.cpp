@@ -16,10 +16,10 @@
 #include <dev/TCA954MUX.hpp>
 #include <dev/TMP117.hpp>
 
-namespace io = core::io;
-namespace dev = core::dev;
+namespace io   = core::io;
+namespace dev  = core::dev;
 namespace time = core::time;
-namespace log = core::log;
+namespace log  = core::log;
 
 #define NUM_TEMP_SENSORS 5
 
@@ -61,17 +61,14 @@ int main() {
 
     io::I2C& i2c = io::getI2C<TMS::TMS::TEMP_SCL, TMS::TMS::TEMP_SDA>();
 
-    //array storing I2CDevices
-    //    TMS::TMP117I2CDevice devices[5];
-
-    //BUS POINTERS
-    //buses, Specify the number of devices on each bus here
+    // BUS POINTERS
+    // buses, Specify the number of devices on each bus here
     TMS::I2CDevice* bus0[2];
     TMS::I2CDevice* bus1[2];
     TMS::I2CDevice* bus2[1];
     TMS::I2CDevice* bus3[1];
 
-    //array of buses
+    // array of buses (minimum 1)
     TMS::I2CDevice** buses[4] = {bus0, bus1, bus2, bus3};
 
     // Setup TMS and necessary device drivers
@@ -79,29 +76,28 @@ int main() {
 
     // Bus 2 on-board sensor
     devices[0] = TMS::TMP117(&i2c, 0x48, &TMS::TMS::sensorTemps[0]);
-    bus2[0] = &devices[0];
+    bus2[0]    = &devices[0];
 
     // Bus 0 devices
     devices[1] = TMS::TMP117(&i2c, 0x48, &TMS::TMS::sensorTemps[1]);
-    bus0[0] = &devices[1];
+    bus0[0]    = &devices[1];
 
     devices[2] = TMS::TMP117(&i2c, 0x4A, &TMS::TMS::sensorTemps[2]);
-    bus0[1] = &devices[2];
+    bus0[1]    = &devices[2];
 
     // Bus 1 devices
     devices[3] = TMS::TMP117(&i2c, 0x48, &TMS::TMS::sensorTemps[3]);
-    bus1[0] = &devices[3];
+    bus1[0]    = &devices[3];
 
     devices[4] = TMS::TMP117(&i2c, 0x4A, &TMS::TMS::sensorTemps[4]);
-    bus1[1] = &devices[4];
+    bus1[1]    = &devices[4];
 
     // Setup MUX with all the devices
-    uint8_t numDevices[4] = {2, 2, 1, 0};// Repeat Device counts on each bus
+    uint8_t numDevices[4] = {2, 2, 1, 0}; // Repeat Device counts on each bus
     TMS::TCA954MUX tca(i2c, 0x70, buses, numDevices);
 
     // Setup all the pumps
-    TMS::Pump pumps[2] = {TMS::Pump(io::getPWM<TMS::TMS::PUMP1_PWM>()),
-                          TMS::Pump(io::getPWM<TMS::TMS::PUMP2_PWM>())};
+    TMS::Pump pumps[2] = {TMS::Pump(io::getPWM<TMS::TMS::PUMP1_PWM>()), TMS::Pump(io::getPWM<TMS::TMS::PUMP2_PWM>())};
 
     // Setup main TMS instance with configured MUX and pumps
     TMS::TMS tms(tca, pumps);
@@ -158,7 +154,6 @@ int main() {
     ///////////////////////////////////////////////////////////////////////////
     // Main loop
     ///////////////////////////////////////////////////////////////////////////
-
     while (1) {
         tms.process();
         io::processCANopenNode(&canNode);

@@ -7,7 +7,8 @@ namespace TMS {
 
 TMP117::TMP117(io::I2C* i2c, uint8_t i2cSlaveAddress) : i2cSlaveAddress(i2cSlaveAddress), i2c(i2c) {}
 
-TMP117::TMP117(io::I2C* i2c, uint8_t i2cSlaveAddress, int16_t* tempPtr) : i2cSlaveAddress(i2cSlaveAddress), i2c(i2c), tempPtr(tempPtr) {}
+TMP117::TMP117(io::I2C* i2c, uint8_t i2cSlaveAddress, int16_t* tempPtr)
+    : i2cSlaveAddress(i2cSlaveAddress), i2c(i2c), tempPtr(tempPtr) {}
 
 TMP117::TMP117() : i2c(nullptr) {}
 
@@ -24,8 +25,8 @@ io::I2C::I2CStatus TMP117::readTemp(int16_t& temp) {
 
     /**
      * degrees centi celsius
-     * multiplied by 78125 because the sensor output increases by .0078125 degrees celsius - brings it to fixed point within 32 bits
-     * divided by 100000 so it fits in a 16 bit int
+     * multiplied by 78125 because the sensor output increases by .0078125 degrees celsius - brings it to fixed point
+     * within 32 bits divided by 100000 so it fits in a 16 bit int
      */
     temp = ((int64_t) temp) * 78125 / 100000;
 
@@ -51,4 +52,4 @@ uint32_t TMP117::value() {
     return lastTempValue;
 }
 
-}// namespace TMS
+} // namespace TMS
