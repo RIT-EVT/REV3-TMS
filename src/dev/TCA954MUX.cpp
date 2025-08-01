@@ -2,7 +2,8 @@
 
 namespace TMS {
 
-TCA954MUX::TCA954MUX(io::I2C& i2c, uint8_t addr, I2CDevice** buses[4], uint8_t numDevices[4])
+TCA954MUX::TCA954MUX(io::I2C& i2c, uint8_t addr, I2CDevice** buses[I2C_MUX_BUS_SIZE],
+                     uint8_t numDevices[I2C_MUX_BUS_SIZE])
     : i2c(i2c), i2cSlaveAddress(addr), busDevices{buses[0], buses[1], buses[2], buses[3]}, numDevices{numDevices[0],
                                                                                                       numDevices[1],
                                                                                                       numDevices[2],
@@ -32,7 +33,7 @@ io::I2C::I2CStatus TCA954MUX::readRegister(uint8_t reg, uint8_t* val) {
     return i2c.readReg(i2cSlaveAddress, reg, val);
 }
 
-void TCA954MUX::pollDevices() {
+void TCA954MUX::pollAllDevices() {
     for (int i = 0; i < I2C_MUX_BUS_SIZE; i++) {
         bool skip = false;
         if (setBus(i, true) == io::I2C::I2CStatus::ERROR) {

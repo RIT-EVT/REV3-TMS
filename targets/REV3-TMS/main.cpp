@@ -68,39 +68,41 @@ int main() {
     TMS::I2CDevice* bus2[1];
     TMS::I2CDevice* bus3[1];
 
+    // Setup MUX with the length of each bus to talk to all the devices
+    uint8_t numDevices[4] = {2, 2, 1, 0}; // Repeat Device counts on each bus
+
     // array of buses (minimum 1)
     TMS::I2CDevice** buses[4] = {bus0, bus1, bus2, bus3};
 
     // Setup TMS and necessary device drivers
     TMS::TMP117 devices[NUM_TEMP_SENSORS];
+    int16_t sensorTemps[NUM_TEMP_SENSORS] = {0};
 
     // Bus 2 on-board sensor
-    devices[0] = TMS::TMP117(&i2c, 0x48, &TMS::TMS::sensorTemps[0]);
+    devices[0] = TMS::TMP117(&i2c, 0x48, &sensorTemps[0]);
     bus2[0]    = &devices[0];
 
     // Bus 0 devices
-    devices[1] = TMS::TMP117(&i2c, 0x48, &TMS::TMS::sensorTemps[1]);
+    devices[1] = TMS::TMP117(&i2c, 0x48, &sensorTemps[1]);
     bus0[0]    = &devices[1];
 
-    devices[2] = TMS::TMP117(&i2c, 0x4A, &TMS::TMS::sensorTemps[2]);
+    devices[2] = TMS::TMP117(&i2c, 0x4A, &sensorTemps[2]);
     bus0[1]    = &devices[2];
 
     // Bus 1 devices
-    devices[3] = TMS::TMP117(&i2c, 0x48, &TMS::TMS::sensorTemps[3]);
+    devices[3] = TMS::TMP117(&i2c, 0x48, &sensorTemps[3]);
     bus1[0]    = &devices[3];
 
-    devices[4] = TMS::TMP117(&i2c, 0x4A, &TMS::TMS::sensorTemps[4]);
+    devices[4] = TMS::TMP117(&i2c, 0x4A, &sensorTemps[4]);
     bus1[1]    = &devices[4];
 
-    // Setup MUX with all the devices
-    uint8_t numDevices[4] = {2, 2, 1, 0}; // Repeat Device counts on each bus
     TMS::TCA954MUX tca(i2c, 0x70, buses, numDevices);
 
     // Setup all the pumps
     TMS::Pump pumps[2] = {TMS::Pump(io::getPWM<TMS::TMS::PUMP1_PWM>()), TMS::Pump(io::getPWM<TMS::TMS::PUMP2_PWM>())};
 
     // Setup main TMS instance with configured MUX and pumps
-    TMS::TMS tms(tca, pumps);
+    TMS::TMS tms(sensorTemps, tca, pumps);
     tmsPtr = &tms;
 
     ///////////////////////////////////////////////////////////////////////////

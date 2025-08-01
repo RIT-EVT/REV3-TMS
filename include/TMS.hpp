@@ -74,16 +74,16 @@ public:
     /**
      * Construct a TMS instance
      *
+     * @param sensorTemps An array of sensor temperatures updated by each temperature sensor instance
      * @param tca954mux I2C MUX instance to use for getting temp sensor data
+     * @param pumps The pumps to control
      */
-    TMS(TCA954MUX& tca954mux, Pump pumps[2]);
+    TMS(int16_t* sensorTemps, TCA954MUX& tca954mux, Pump pumps[2]);
 
     /**
-     * Array to store the thermistor values
-     * Must be public, so they can be written to by the TMP117Device class
-     * TODO: Refactor code to make this private
+     * Pointer to the array to store the thermistor values.
      */
-    static int16_t sensorTemps[NUM_TEMP_SENSORS];
+    int16_t* sensorTemps;
 
     CO_OBJ_T* getObjectDictionary() override;
 

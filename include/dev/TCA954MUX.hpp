@@ -24,7 +24,7 @@ enum TCA954_BUS {
 /**
  * Device driver for TCA9545A I2C Multiplexer. This allows multiple devices with the same address to be connected to
  * the same bus by switching between 4 sub-buses that can be connected to the microcontroller.
- * Datasheet: https://www.ti.com/lit/ds/symlink/tca9545a.pdf
+ * Datasheet: datasheets/tca9545a.pdf
  */
 class TCA954MUX {
 public:
@@ -48,9 +48,9 @@ public:
     io::I2C::I2CStatus setBus(uint8_t bus, bool toggled);
 
     /**
-     * Runs all actions on all I2CDevices stored in the bus
+     * Runs the actions on all attached I2CDevices connected to the mux bus
      */
-    void pollDevices();
+    void pollAllDevices();
 
 private:
     /**

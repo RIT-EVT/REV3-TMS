@@ -10,7 +10,7 @@ namespace TMS {
 
 /**
  * Temp sensor for TMS
- * https://www.ti.com/lit/ds/symlink/tmp117.pdf
+ * Datasheet: datasheets/tmp117.pdf
  */
 class TMP117 : public I2CDevice {
 public:
@@ -19,17 +19,9 @@ public:
      *
      * @param[in] i2c used to read temperature
      * @param[in] i2cSlaveAddress address to ID the sensor on the I2C bus
-     * */
-    TMP117(io::I2C* i2c, uint8_t i2cSlaveAddress);
-
-    /**
-     * Temp sensor constructor
-     *
-     * @param[in] i2c used to read temperature
-     * @param[in] i2cSlaveAddress address to ID the sensor on the I2C bus
      * @param[in] tempValue pointer to store the temp value in on action
      * */
-    TMP117(io::I2C* i2c, uint8_t i2cSlaveAddress, int16_t* tempPtr);
+    TMP117(io::I2C* i2c, uint8_t i2cSlaveAddress, int16_t* tempPtr = nullptr);
 
     /**
      * default constructor for instantiation of uninitialized instances
@@ -37,7 +29,7 @@ public:
     TMP117();
 
     /**
-     * Reads the temperature
+     * Reads the temperature directly. Does not update the previous temperature value.
      *
      * @param[out] temp the temperature reading in degrees centi-celsius
      * @return I2CStatus of the reading

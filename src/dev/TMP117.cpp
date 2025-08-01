@@ -5,8 +5,6 @@
 
 namespace TMS {
 
-TMP117::TMP117(io::I2C* i2c, uint8_t i2cSlaveAddress) : i2cSlaveAddress(i2cSlaveAddress), i2c(i2c) {}
-
 TMP117::TMP117(io::I2C* i2c, uint8_t i2cSlaveAddress, int16_t* tempPtr)
     : i2cSlaveAddress(i2cSlaveAddress), i2c(i2c), tempPtr(tempPtr) {}
 
