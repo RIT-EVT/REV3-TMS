@@ -105,10 +105,10 @@ public:
 
 private:
     /** The node ID used to identify the device on the CAN network */
-    static constexpr uint8_t NODE_ID = 0x02;
+    static constexpr uint8_t NODE_ID = 0x03;
 
     /** TEMPORARY: The node ID for the VCU to identify TPDOs*/
-    static constexpr uint8_t VCU_NODE_ID = 0x00;
+    static constexpr uint8_t VCU_NODE_ID = 0x01;
     /** Current NMT Mode */
     CO_MODE mode = CO_PREOP;
 
